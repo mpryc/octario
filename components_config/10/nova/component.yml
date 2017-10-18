@@ -89,6 +89,22 @@ tempest:
    run: ""
 
 
+# Nova manage db
+managedb:
+    rpm_deps: [
+        mariadb-server,
+        openstack-nova
+    ]
+    remove_rpm: []
+    run: >
+        sudo nova-manage --debug db archive_deleted_rows --max_rows 100000 --verbose > ../logs/archived_rows.log;
+        sudo nova-manage --debug db archive_deleted_rows --max_rows 100000 --verbose >> ../logs/archived_rows.log;
+        sudo nova-manage --debug db archive_deleted_rows --max_rows 100000 --verbose >> ../logs/archived_rows.log;
+        sudo nova-manage --debug db archive_deleted_rows --max_rows 100000 --verbose >> ../logs/archived_rows.log;
+        sudo nova-manage --debug db archive_deleted_rows --max_rows 100000 --verbose >> ../logs/archived_rows.log;
+        sudo nova-manage --debug db archive_deleted_rows --max_rows 100000 --verbose >> ../logs/archived_rows.log;
+
+
 # Additional repository required to install testing dependencies
 enable_repos: [
     rhelosp-10.0-unittest
