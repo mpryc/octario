@@ -1,0 +1,16 @@
+- name: Run Octario - Nova Manage DB test
+  hosts: tester
+  vars:
+    db_name: nova
+    db_username: nova
+    tester:
+      component:
+        tox_target: managedb
+  roles:
+    - { role: setup_repos }
+    - { role: setup_environment }
+    - { role: install_packages }
+    - { role: setup_mariadb }
+    - { role: nova_managedb }
+    - { role: run_tests }
+    - { role: collect_logs }

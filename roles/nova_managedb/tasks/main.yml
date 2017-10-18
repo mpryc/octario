@@ -1,0 +1,25 @@
+- name: Download SQL dump
+  get_url:
+    url: "http://goodsquishy.com/downloads/nova.sql.gz"
+    dest: "{{ ansible_env.HOME }}/nova.sql.gz"
+
+# Ansible unarchive doesn't work well with *.gz files
+# ansible localhost -m unarchive -a "src=nova.sql.gz dest=/tmp/"
+- name: Unarchive SQL dump
+  shell: |
+    gunzip "{{ ansible_env.HOME }}/nova.sql.gz"
+
+- name: Check if source SQL db exists
+  stat:
+    path: "{{ ansible_env.HOME }}/nova.sql"
+  register: nova_sql_db
+
+- name: Import DB
+  mysql_db:
+    name: "{{ db_name }}"
+    state: import
+    login_user: "{{ db_username }}"
+    login_password: "{{ db_username }}"
+    target: "{{ ansible_env.HOME }}/nova.sql"
+  when: nova_sql_db.stat.isreg is defined and nova_sql_db.stat.isreg == True
+
